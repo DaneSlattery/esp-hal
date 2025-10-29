@@ -3135,6 +3135,33 @@ impl WifiController<'_> {
         }
     }
 
+
+    /// Get the Access Point information of AP to which the device is associated with.
+    /// The value is obtained from the last beacon.
+    ///
+    /// <div class="warning">
+    ///
+    /// - Use this API only in STA or AP-STA mode.
+    /// - This API should be called after the station has connected to an access point.
+    /// </div>
+    ///
+    /// # Errors
+    /// This function returns [`WifiError::Unsupported`] if the STA side isn't
+    /// running. For example, when configured for AP only.
+    pub fn get_apinfo(&self) -> Result<AccessPointInfo, WifiError> {
+        if self.mode()?.is_sta() {
+            let mut record: MaybeUninit<include::wifi_ap_record_t> = MaybeUninit::uninit();
+
+            esp_wifi_result!(unsafe { esp_wifi_sta_get_ap_info(record) })?;
+
+            let ap_info = convert_ap_info(record);
+            Ok(ap_info)
+        } else {
+            Err(WifiError::Unsupported)
+        }
+    }
+
+
     /// Get the supported capabilities of the controller.
     pub fn capabilities(&self) -> Result<EnumSet<crate::wifi::Capability>, WifiError> {
         let caps =
