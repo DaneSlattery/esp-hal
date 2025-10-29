@@ -3151,8 +3151,8 @@ impl WifiController<'_> {
     pub fn ap_info(&self) -> Result<AccessPointInfo, WifiError> {
         if self.mode()?.is_sta() {
             let mut record: MaybeUninit<include::wifi_ap_record_t> = MaybeUninit::uninit();
-
-            esp_wifi_result!(unsafe { esp_wifi_sta_get_ap_info(record) })?;
+            let record = unsafe { MaybeUninit::assume_init_mut(&mut record) };
+            esp_wifi_result!(unsafe { include::esp_wifi_sta_get_ap_info(record) })?;
 
             let ap_info = convert_ap_info(record);
             Ok(ap_info)
