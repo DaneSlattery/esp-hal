@@ -3135,7 +3135,6 @@ impl WifiController<'_> {
         }
     }
 
-
     /// Get the Access Point information of AP to which the device is associated with.
     /// The value is obtained from the last beacon.
     ///
@@ -3148,7 +3147,7 @@ impl WifiController<'_> {
     /// # Errors
     /// This function returns [`WifiError::Unsupported`] if the STA side isn't
     /// running. For example, when configured for AP only.
-    pub fn get_apinfo(&self) -> Result<AccessPointInfo, WifiError> {
+    pub fn ap_info(&self) -> Result<AccessPointInfo, WifiError> {
         if self.mode()?.is_sta() {
             let mut record: MaybeUninit<include::wifi_ap_record_t> = MaybeUninit::uninit();
 
@@ -3160,7 +3159,6 @@ impl WifiController<'_> {
             Err(WifiError::Unsupported)
         }
     }
-
 
     /// Get the supported capabilities of the controller.
     pub fn capabilities(&self) -> Result<EnumSet<crate::wifi::Capability>, WifiError> {
