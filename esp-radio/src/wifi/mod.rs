@@ -125,6 +125,7 @@ use crate::binary::{
         esp_wifi_set_protocol,
         esp_wifi_set_tx_done_cb,
         esp_wifi_sta_get_rssi,
+        esp_wifi_sta_get_ap_info,
         esp_wifi_start,
         esp_wifi_stop,
         g_wifi_default_wpa_crypto_funcs,
