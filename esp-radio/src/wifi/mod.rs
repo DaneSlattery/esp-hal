@@ -124,8 +124,8 @@ use crate::binary::{
         esp_wifi_set_mode,
         esp_wifi_set_protocol,
         esp_wifi_set_tx_done_cb,
-        esp_wifi_sta_get_rssi,
         esp_wifi_sta_get_ap_info,
+        esp_wifi_sta_get_rssi,
         esp_wifi_start,
         esp_wifi_stop,
         g_wifi_default_wpa_crypto_funcs,
@@ -3153,7 +3153,7 @@ impl WifiController<'_> {
             let mut record: MaybeUninit<include::wifi_ap_record_t> = MaybeUninit::uninit();
             esp_wifi_result!(unsafe { esp_wifi_sta_get_ap_info(record.as_mut_ptr()) })?;
 
-            let record = unsafe { MaybeUninit::assume_init( record) };
+            let record = unsafe { MaybeUninit::assume_init(record) };
             let ap_info = convert_ap_info(&record);
             Ok(ap_info)
         } else {
